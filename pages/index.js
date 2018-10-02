@@ -5,6 +5,10 @@ import Layout from '../components/Layout'
 import { Link } from '../routes'
 
 const Campaigns = ({ campaigns }) => {
+  if (!campaigns || !campaigns.length) {
+    return <p>There are no campaigns yet. Go create one &mdash;&gt;</p>
+  }
+
   const items = campaigns.map(address => ({
     header: address,
     description: (
