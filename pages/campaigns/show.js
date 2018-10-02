@@ -3,7 +3,8 @@ import Layout from '../../components/Layout'
 import ContributeForm from '../../components/ContributeForm'
 import Campaign from '../../ethereum/campaign'
 import web3 from '../../ethereum/web3'
-import { Card, Grid } from 'semantic-ui-react'
+import { Button, Card, Grid } from 'semantic-ui-react'
+import { Link } from '../../routes'
 
 const Summary = ({
   minimumContribution,
@@ -55,12 +56,23 @@ class CampaignShow extends Component {
     return (
       <Layout title="Campaign Page">
         <Grid>
-          <Grid.Column width={10}>
-            <Summary {...this.props} />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <ContributeForm address={this.props.address} />
-          </Grid.Column>
+          <Grid.Row>
+            <Grid.Column width={10}>
+              <Summary {...this.props} />
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <ContributeForm address={this.props.address} />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Link route={`/campaigns/${this.props.address}/requests`}>
+                <a>
+                  <Button primary>View Requests</Button>
+                </a>
+              </Link>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </Layout>
     )
