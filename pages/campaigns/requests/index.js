@@ -6,17 +6,32 @@ import Campaign from '../../../ethereum/campaign'
 import web3 from '../../../ethereum/web3'
 
 const RequestRow = ({ request, index, address, approversCount, onApprove, onFinalize }) => (
-  <Table.Row>
+  <Table.Row
+    disabled={request.complete}
+    positive={request.approvalCount / approversCount > .5 && !request.complete}>
     <Table.Cell>{index}</Table.Cell>
     <Table.Cell>{request.description}</Table.Cell>
     <Table.Cell>{web3.utils.fromWei(request.value, 'ether')}</Table.Cell>
     <Table.Cell>{request.recipient}</Table.Cell>
     <Table.Cell>{request.approvalCount}/{approversCount}</Table.Cell>
     <Table.Cell>
-      <Button color="green" basic onClick={onApprove}>Approve</Button>
+      { request.complete ? null : (
+        <Button basic
+          color="green"
+          onClick={onApprove}>
+          Approve
+        </Button>
+      )}
     </Table.Cell>
     <Table.Cell>
-      <Button color="orange" basic onClick={onFinalize}>Finalize</Button>
+      { request.complete ? null : (
+        <Button basic
+          color="blue"
+          disabled={request.approvalCount / approversCount <= .5}
+          onClick={onFinalize}>
+          Finalize
+        </Button>
+      )}
     </Table.Cell>
   </Table.Row>
 )
@@ -54,7 +69,9 @@ class Requests extends Component {
       <Layout title="Requests">
         <Link route={`/campaigns/${this.props.address}/requests/new`}>
           <a>
-            <Button primary>Add Request</Button>
+            <Button primary floated="right" style={{ marginBottom: 10 }}>
+              Add Request
+            </Button>
           </a>
         </Link>
         <Table celled>
@@ -83,6 +100,7 @@ class Requests extends Component {
             )}
           </Table.Body>
         </Table>
+        <div>Found {this.props.requestsCount} request(s).</div>
       </Layout>
     )
   }
